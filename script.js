@@ -38,7 +38,7 @@ for (let r = 0; r < row; r++) {
             'border', 'border-gray-400', 'rounded',
             'bg-white', 'text-gray-800',
             'focus:outline-none', 'focus:ring-2', 'focus:ring-indigo-400', 'focus:ring-offset-2',
-            'transition-colors', 'duration-150', "text-white"
+            'transition-colors', 'duration-150', "text-transparent"
         ].join(' ');
         btn.textContent = idx;
 
@@ -55,23 +55,46 @@ for (let r = 0; r < row; r++) {
 
 let counter = 0;
 const message = document.getElementById("message");
+let gameOver = false;
 function toggleCell(el) {
+    if (gameOver) return; // blocco click se ho già perso o vinto
     const isPressed = el.getAttribute('aria-pressed') === 'true';
     if (!isPressed) {
         el.setAttribute('aria-pressed', 'true'); // segno la cella come cliccata
         if (el.dataset.bomb === "true") {
             // gestione bomba
+            el.classList.remove("text-transparent");
             el.classList.add("bg-red-600", "text-white");
             el.innerHTML = `<i class="fa-solid fa-bomb"></i>`;
-            el.removeEventListener('click', () => toggleCell(el));
             message.innerHTML = "Hai perso";
+            message.classList.add("text-red-600");
+            gameOver = true;
+            const allCells = document.querySelectorAll("#game-board button");
+            allCells.forEach(cell => {
+                cell.classList.remove("cursor-pointer"); 
+                cell.classList.add("cursor-not-allowed");  // cursore disabilitato
+            });
         } else {
+            el.classList.remove("text-transparent");
             el.classList.add("bg-gray-400", "text-white");
             counter = counter + 1;
             point.innerHTML = counter;
         }
     }
-    if(counter === totalCells - bombCount) {
+    if (counter === totalCells - bombCount) {
         message.innerHTML = "Hai vinto";
+        message.classList.add("text-green-600");
+        gameOver = true;
+        const allCells = document.querySelectorAll("#game-board button");
+        allCells.forEach(cell => {
+            cell.classList.remove("cursor-pointer"); 
+            cell.classList.add("cursor-not-allowed");  // cursore disabilitato
+        });
     }
 }
+
+// Bottone reset
+const resetBtn = document.getElementById("reset");
+resetBtn.addEventListener("click", () => {
+    location.reload(); // ricarica la pagina e resetta tutto
+});
