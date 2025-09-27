@@ -1,9 +1,15 @@
 const board = document.getElementById("game-board");  // Seleziono la tabella tramite l'id
 const point = document.getElementById("count-point");
+const message = document.getElementById("message");
+const resetBtn = document.getElementById("reset");  // Bottone reset
+
 const row = 7;  // numero di righe
 const cols = 7;  // numero di colonne
 const totalCells = row * cols;  // Totale numero di celle
 const bombCount = 16;  // numero bombe
+
+let counter = 0;
+let gameOver = false;
 
 // Creazione lista indici
 const indices = [];
@@ -38,7 +44,7 @@ for (let r = 0; r < row; r++) {
             'border', 'border-gray-400', 'rounded',
             'bg-white', 'text-gray-800',
             'focus:outline-none', 'focus:ring-2', 'focus:ring-indigo-400', 'focus:ring-offset-2',
-            'transition-colors', 'duration-150', "text-transparent"
+            'transition-colors', 'duration-150', "text-transparent", "cursor-pointer"
         ].join(' ');
         btn.textContent = idx;
 
@@ -53,9 +59,7 @@ for (let r = 0; r < row; r++) {
     }
 }
 
-let counter = 0;
-const message = document.getElementById("message");
-let gameOver = false;
+// Funzione gestione click
 function toggleCell(el) {
     if (gameOver) return; // blocco click se ho già perso o vinto
     const isPressed = el.getAttribute('aria-pressed') === 'true';
@@ -64,19 +68,13 @@ function toggleCell(el) {
         if (el.dataset.bomb === "true") {
             // gestione bomba
             el.classList.remove("text-transparent");
-            el.classList.add("bg-red-600", "text-white");
+            el.classList.add("text-red-600");
             el.innerHTML = `<i class="fa-solid fa-bomb"></i>`;
-            message.innerHTML = "Hai perso";
-            message.classList.add("text-red-600");
             gameOver = true;
-            const allCells = document.querySelectorAll("#game-board button");
-            allCells.forEach(cell => {
-                cell.classList.remove("cursor-pointer"); 
-                cell.classList.add("cursor-not-allowed");  // cursore disabilitato
-            });
+            endGame();
         } else {
             el.classList.remove("text-transparent");
-            el.classList.add("bg-gray-400", "text-white");
+            el.classList.add("text-black");
             counter = counter + 1;
             point.innerHTML = counter;
         }
@@ -85,16 +83,27 @@ function toggleCell(el) {
         message.innerHTML = "Hai vinto";
         message.classList.add("text-green-600");
         gameOver = true;
-        const allCells = document.querySelectorAll("#game-board button");
-        allCells.forEach(cell => {
-            cell.classList.remove("cursor-pointer"); 
-            cell.classList.add("cursor-not-allowed");  // cursore disabilitato
-        });
+        endGame();
     }
 }
 
-// Bottone reset
-const resetBtn = document.getElementById("reset");
+//Disabilita tutte le celle a fine gioco
+function endGame() {
+    const allCells = document.querySelectorAll("#game-board button");
+    allCells.forEach(cell => {
+        cell.classList.remove("cursor-pointer", "text-transparent");
+        cell.classList.add("cursor-not-allowed");  // cursore disabilitato
+        if (cell.dataset.bomb === "true") {
+            cell.classList.add("text-red-600");
+            cell.innerHTML = `<i class="fa-solid fa-bomb"></i>`;
+            message.innerHTML = "Hai perso";
+            message.classList.add("text-red-600");
+        } else {
+            cell.classList.add("text-black");
+        }
+    });
+}
+
 resetBtn.addEventListener("click", () => {
     location.reload(); // ricarica la pagina e resetta tutto
 });

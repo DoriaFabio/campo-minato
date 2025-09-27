@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "script.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:css": "tailwindcss -c tailwind.config.js -i ./input.css -o ./public/tailwind.css --minify",
+    "watch:css": "tailwindcss -c tailwind.config.js -i ./input.css -o ./public/tailwind.css --watch"
   },
   "repository": {
     "type": "git",
@@ -13,12 +15,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/DoriaFabio/campo-minato/issues"
   },
   "homepage": "https://github.com/DoriaFabio/campo-minato#readme",
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.13"
+    "tailwindcss": "^4.1.13"
   }
 }
