@@ -42,7 +42,7 @@ for (let r = 0; r < row; r++) {
             'w-12', 'h-12', 'sm:w-14', 'sm:h-14',
             'flex', 'items-center', 'justify-center',
             'border', 'border-gray-400', 'rounded',
-            'bg-white', 'text-gray-800',
+            'text-gray-800',
             'focus:outline-none', 'focus:ring-2', 'focus:ring-indigo-400', 'focus:ring-offset-2',
             'transition-colors', 'duration-150', "text-transparent", "cursor-pointer"
         ].join(' ');
@@ -66,10 +66,6 @@ function toggleCell(el) {
     if (!isPressed) {
         el.setAttribute('aria-pressed', 'true'); // segno la cella come cliccata
         if (el.dataset.bomb === "true") {
-            // gestione bomba
-            el.classList.remove("text-transparent");
-            el.classList.add("text-red-600");
-            el.innerHTML = `<i class="fa-solid fa-bomb"></i>`;
             gameOver = true;
             endGame();
         } else {
@@ -94,6 +90,7 @@ function endGame() {
         cell.classList.remove("cursor-pointer", "text-transparent");
         cell.classList.add("cursor-not-allowed");  // cursore disabilitato
         if (cell.dataset.bomb === "true") {
+            cell.classList.remove("text-transparent");
             cell.classList.add("text-red-600");
             cell.innerHTML = `<i class="fa-solid fa-bomb"></i>`;
             message.innerHTML = "Hai perso";
