@@ -1,1 +1,4 @@
 @import "tailwindcss";
+
+/* Classi aggiunte dinamicamente via JS (non rilevate dal content scanner) */
+@source inline("text-transparent text-black text-red-600 text-green-600 text-orange-500 bg-gray-200 cursor-pointer cursor-not-allowed");

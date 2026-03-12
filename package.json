@@ -5,8 +5,8 @@
   "main": "script.js",
   "type": "commonjs",
   "scripts": {
-    "build:css": "tailwindcss -c tailwind.config.js -i ./input.css -o ./public/tailwind.css --minify",
-    "watch:css": "tailwindcss -c tailwind.config.js -i ./input.css -o ./public/tailwind.css --watch"
+    "build:css": "tailwindcss -i ./input.css -o ./public/tailwind.css --minify",
+    "watch:css": "tailwindcss -i ./input.css -o ./public/tailwind.css --watch"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/DoriaFabio/campo-minato#readme",
   "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
     "tailwindcss": "^4.1.13"
   }
 }
